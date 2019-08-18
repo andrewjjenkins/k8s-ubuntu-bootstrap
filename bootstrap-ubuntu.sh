@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euxo pipefail
+set -euo pipefail
 
 RAM=8192 #MB
 VCPUS=8
@@ -38,7 +38,11 @@ if [ -n "$BRIDGE" ]; then
 fi
 
 CMD="$CMD $FULLNAME $BASESPEC"
+echo "Defining KVM guest..."
+echo "$CMD"
 eval "$CMD"
+
+virsh autostart ${FULLNAME}
 
 echo "Attempting to SSH to ${HOST}, may take a few attempts..."
 COMPLETE=""
