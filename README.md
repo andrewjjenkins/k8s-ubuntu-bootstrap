@@ -18,32 +18,51 @@ script to create a one-node kubernetes cluster.
 
 Here's example output:
 
-    Attempting to SSH to ubuntu-k8s-foobar.local, may take a few attempts...
-    ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
-    ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
-    ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
-    ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
-    ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
-    ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
-    Warning: Permanently added 'ubuntu-k8s-foobar.local,192.168.7.99' (ECDSA) to the list of known hosts.
-    Starting k8s bootstrap at Sun Aug 18 05:41:11 UTC 2019
-    apt-get complete
-    kubeadm config images pull complete
-    kubeadm init complete
-    kubectl taint nodes (to schedule on master) complete
-    kubectl install of flannel complete
-    kubectl patch coredns complete
-    Dashboard installation complete
-    To log in to dashboard, go to:
-       https://192.168.7.99:30443
-    Choose the token login, and provide this token:
-    eyJhbGciOiJSUzI1NiIs....
+```
+$ ./bootstrap-ubuntu.sh
+Defining KVM guest...
+uvt-kvm create   --memory 8192 --cpu 8   --run-script-once ubuntu-guest-runonce.sh  --bridge br0 ubuntu-k8s-foobar arch=amd64 release=bionic label=release
+Domain ubuntu-k8s-foobar marked as autostarted
+Attempting to SSH to ubuntu-k8s-foobar.local, may take a few attempts...
+ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
+ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
+ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
+ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
+ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
+ssh: Could not resolve hostname ubuntu-k8s-foobar.local: Name or service not known
+Warning: Permanently added 'ubuntu-k8s-foobar.local,192.168.7.99' (ECDSA) to the list of known hosts.
+Starting k8s bootstrap at Sun Aug 18 05:41:11 UTC 2019
+apt-get complete
+kubeadm config images pull complete
+kubeadm init complete
+kubectl taint nodes (to schedule on master) complete
+kubectl install of flannel complete
+kubectl patch coredns complete
+Dashboard installation complete
+To log in to dashboard, go to:
+   https://192.168.7.99:30443
+Choose the token login, and provide this token:
+eyJhbGciOiJSUzI1NiIs....
 
-    You can safely CTRL-C now.  To tear down, run:
-      sudo uvt-kvm destroy ubuntu-k8s-foobar
+You can safely CTRL-C now.  To tear down, run:
+  sudo uvt-kvm destroy ubuntu-k8s-foobar
+```
 
 You can use the one-node cluster or you can also use kubeadm to join additional
 nodes.  It installs the kubernetes dashboard by default.
+
+## Caveats
+
+- You must run this as a user in the libvirt group (`sudo adduser $USER libvirt`)
+
+- Your host should bridge VMs to the network via `br0` (or edit the BRIDGE
+option in `bootstrap-ubuntu.sh`)
+
+- Your host should have 8GB of RAM (or edit options in `bootstrap-ubuntu.sh`)
+
+- Your host must resolve `.local` addresses (`sudo apt-get install avahi-daemon`)
+
+- Whatever network your host connects to should have DHCP.
 
 ## License
 
