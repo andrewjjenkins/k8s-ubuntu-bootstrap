@@ -60,6 +60,8 @@ option in `bootstrap-ubuntu.sh`)
 
 - Your host should have 8GB of RAM (or edit options in `bootstrap-ubuntu.sh`)
 
+- Your host must have libvirt and uvtool installed (`sudo apt-get install libvirt uvtool`)
+
 - Your host must resolve `.local` addresses (`sudo apt-get install avahi-daemon`)
 
 - Whatever network your host connects to should have DHCP.
