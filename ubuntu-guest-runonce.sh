@@ -43,7 +43,7 @@ echo "kubectl taint nodes (to schedule on master) complete" >> $LOGFILE
 
 sysctl -w net.bridge.bridge-nf-call-iptables=1
 
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/62e44c867a2846fefb68bd5f178daf4da3095ccb/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/b99442c989cf41551d2604f4eecc223329dbd553/Documentation/kube-flannel.yml
 
 echo "kubectl install of flannel complete" >> $LOGFILE
 

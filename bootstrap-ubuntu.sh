@@ -3,7 +3,11 @@ set -euo pipefail
 
 RAM=8192 #MB
 VCPUS=8
-BRIDGE=br0
+BRIDGE=""
+if ifconfig br0 2>/dev/null >/dev/null; then
+  BRIDGE="br0"
+  echo "Using bridge $BRIDGE"
+fi
 BASESPEC="arch=amd64 release=bionic label=release"
 
 
@@ -31,6 +35,7 @@ ssh-keygen -R ${FULLNAME}.local || true
 CMD="uvt-kvm create \
   --memory $RAM --cpu $VCPUS \
   --run-script-once ubuntu-guest-runonce.sh \
+  --ssh-public-key-file $SSHPUBKEY \
 "
 
 if [ -n "$BRIDGE" ]; then
